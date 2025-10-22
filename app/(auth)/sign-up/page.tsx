@@ -11,7 +11,7 @@ import {
 } from "@/lib/constants";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { signUpWithEmail } from "@/lib/actions/auth.action";
+import { signUpWithEmail } from "@/lib/actions/auth.actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
