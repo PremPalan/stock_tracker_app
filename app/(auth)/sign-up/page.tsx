@@ -11,6 +11,9 @@ import {
 } from "@/lib/constants";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { signUpWithEmail } from "@/lib/actions/auth.action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // ✅ Dynamic imports for client-only select components
 const CountrySelectField = dynamic(
@@ -24,6 +27,7 @@ const SelectField = dynamic(
 );
 
 const SignUp = () => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -44,9 +48,13 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      console.log(data);
+      const result = await signUpWithEmail(data);
+      if(result.success) router.push('/');
     } catch (e) {
       console.log(e);
+      toast.error('Sign up failed', {
+        description: e instanceof Error ? e.message : 'Failed to create an Account'
+      })
     }
   };
 
