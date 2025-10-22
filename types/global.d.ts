@@ -1,223 +1,356 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-declare module '*.css';
+declare module "*.css";
 
 declare global {
-    type SignInFormData = {
-        email: string;
-        password: string;
-    };
+  // ───────────────────────────────
+  // AUTH TYPES
+  // ───────────────────────────────
+  type SignInFormData = {
+    email: string;
+    password: string;
+  };
 
-    type SignUpFormData = {
-        fullName: string;
-        email: string;
-        password: string;
-        country: string;
-        investmentGoals: string;
-        riskTolerance: string;
-        preferredIndustry: string;
-    };
+  type SignUpFormData = {
+    fullName: string;
+    email: string;
+    password: string;
+    country: string;
+    investmentGoals: string;
+    riskTolerance: string;
+    preferredIndustry: string;
+  };
 
-    type CountrySelectProps = {
-        name: string;
-        label: string;
-        control: Control;
-        error?: FieldError;
-        required?: boolean;
-    };
+  type User = {
+    id: string;
+    name: string;
+    email: string;
+  };
 
-    type FormInputProps = {
-        name: string;
-        label: string;
-        placeholder: string;
-        type?: string;
-        register: UseFormRegister;
-        error?: FieldError;
-        validation?: RegisterOptions;
-        disabled?: boolean;
-        value?: string;
-    };
+  type UserForNewsEmail = {
+    id: string;
+    email: string;
+    name: string;
+    country: string;
+    investmentGoals?: string;
+    riskTolerance?: string;
+    preferredIndustry?: string;
+  };
 
-    type Option = {
-        value: string;
-        label: string;
-    };
+  type WelcomeEmailData = {
+    email: string;
+    name: string;
+    intro: string;
+  };
 
-    type SelectFieldProps = {
-        name: string;
-        label: string;
-        placeholder: string;
-        options: readonly Option[];
-        control: Control;
-        error?: FieldError;
-        required?: boolean;
-    };
+  // ───────────────────────────────
+  // FORM TYPES
+  // ───────────────────────────────
+  type CountrySelectProps = {
+    name: string;
+    label: string;
+    control: Control<any>;
+    error?: FieldError;
+    required?: boolean;
+  };
 
-    type FooterLinkProps = {
-        text: string;
-        linkText: string;
-        href: string;
-    };
+  type FormInputProps = {
+    name: string;
+    label: string;
+    placeholder: string;
+    type?: string;
+    register: UseFormRegister<any>;
+    error?: FieldError;
+    validation?: RegisterOptions;
+    disabled?: boolean;
+    value?: string;
+  };
 
-    type SearchCommandProps = {
-        renderAs?: 'button' | 'text';
-        label?: string;
-        initialStocks: StockWithWatchlistStatus[];
-    };
+  type Option = {
+    value: string;
+    label: string;
+  };
 
-    type WelcomeEmailData = {
-        email: string;
-        name: string;
-        intro: string;
-    };
+  type SelectFieldProps = {
+    name: string;
+    label: string;
+    placeholder: string;
+    options: readonly Option[];
+    control: Control<any>;
+    error?: FieldError;
+    required?: boolean;
+  };
 
-    type User = {
-        id: string;
-        name: string;
-        email: string;
-    };
+  type FooterLinkProps = {
+    text: string;
+    linkText: string;
+    href: string;
+  };
 
-    type Stock = {
-        symbol: string;
-        name: string;
-        exchange: string;
-        type: string;
-    };
+  // ───────────────────────────────
+  // STOCK TYPES
+  // ───────────────────────────────
+  type Stock = {
+    symbol: string;
+    name: string;
+    exchange: string;
+    type: string;
+  };
 
-    type StockWithWatchlistStatus = Stock & {
-        isInWatchlist: boolean;
-    };
+  type StockWithWatchlistStatus = Stock & {
+    isInWatchlist: boolean;
+  };
 
-    type FinnhubSearchResult = {
-        symbol: string;
-        description: string;
-        displaySymbol?: string;
-        type: string;
-    };
+  type StockData = {
+    symbol: string;
+    company: string;
+    price: string;
+    change: string;
+    marketCap: string;
+    peRatio: string;
+    eps: string;
+    sentiment: string;
+  };
 
-    type FinnhubSearchResponse = {
-        count: number;
-        result: FinnhubSearchResult[];
-    };
+  type SelectedStock = {
+    symbol: string;
+    company: string;
+    currentPrice?: number;
+  };
 
-    type StockDetailsPageProps = {
-        params: Promise<{
-            symbol: string;
-        }>;
-    };
+  type StockWithData = {
+    _id?: string;
+    userId: string;
+    symbol: string;
+    company: string;
+    addedAt: Date;
+    currentPrice?: number;
+    changePercent?: number;
+    changeAmount?: number;
+    priceFormatted?: string;
+    changeFormatted?: string;
+    changeAmountFormatted?: string;
+    marketCap?: string;
+    peRatio?: string;
+    tradingViewSymbol?: string;
+  };
 
-    type WatchlistButtonProps = {
-        symbol: string;
-        company: string;
-        isInWatchlist: boolean;
-        showTrashIcon?: boolean;
-        type?: 'button' | 'icon';
-        onWatchlistChange?: (symbol: string, isAdded: boolean) => void;
-    };
+  type StockDetailsData = {
+    // Basic Information
+    symbol: string;
+    company: string;
+    exchange: string;
+    currency: string;
+    country: string;
 
-    type QuoteData = {
-        c?: number;
-        dp?: number;
-    };
+    // Price Information
+    currentPrice: number;
+    previousClose: number;
+    dayHigh: number;
+    dayLow: number;
+    openPrice: number;
 
-    type ProfileData = {
-        name?: string;
-        marketCapitalization?: number;
-    };
+    // Calculated Metrics
+    changeAmount: number;
+    changePercent: number;
+    priceFormatted: string;
+    changeFormatted: string;
+    changeAmountFormatted: string;
 
-    type FinancialsData = {
-        metric?: { [key: string]: number };
-    };
+    // Company Information
+    marketCap: number;
+    marketCapFormatted: string;
+    sharesOutstanding: number;
 
-    type SelectedStock = {
-        symbol: string;
-        company: string;
-        currentPrice?: number;
-    };
+    // Additional Data
+    industry: string;
+    website: string;
+    logo: string;
+    ipo: string;
+    phone: string;
 
-    type WatchlistTableProps = {
-        watchlist: StockWithData[];
-    };
+    // Financial Metrics
+    peRatio: string;
+    eps: string;
+    sentiment: string;
 
-    type StockWithData = {
-        userId: string;
-        symbol: string;
-        company: string;
-        addedAt: Date;
-        currentPrice?: number;
-        changePercent?: number;
-        priceFormatted?: string;
-        changeFormatted?: string;
-        marketCap?: string;
-        peRatio?: string;
-    };
+    // Metadata
+    lastUpdated: string;
+  };
 
-    type AlertsListProps = {
-        alertData: Alert[] | undefined;
-    };
+  type StockDetailsProps = {
+    symbol: string | null;
+    onClose: () => void;
+    open: boolean;
+  };
 
-    type MarketNewsArticle = {
-        id: number;
-        headline: string;
-        summary: string;
-        source: string;
-        url: string;
-        datetime: number;
-        category: string;
-        related: string;
-        image?: string;
-    };
+  // ───────────────────────────────
+  // NEWS TYPES
+  // ───────────────────────────────
+  type MarketNewsArticle = {
+    id: number;
+    headline: string;
+    summary: string;
+    source: string;
+    url: string;
+    datetime: number;
+    category: string;
+    related: string;
+    image?: string;
+  };
 
-    type WatchlistNewsProps = {
-        news?: MarketNewsArticle[];
-    };
+  type RawNewsArticle = {
+    id: number;
+    headline?: string;
+    summary?: string;
+    source?: string;
+    url?: string;
+    datetime?: number;
+    image?: string;
+    category?: string;
+    related?: string;
+  };
 
-    type SearchCommandProps = {
-        open?: boolean;
-        setOpen?: (open: boolean) => void;
-        renderAs?: 'button' | 'text';
-        buttonLabel?: string;
-        buttonVariant?: 'primary' | 'secondary';
-        className?: string;
-    };
+  type WatchlistNewsProps = {
+    watchlistSymbols?: string[];
+    watchlistStocks?: StockWithData[];
+    articlesPerStock?: number;
+    initialNews?: MarketNewsArticle[];
+    news?: MarketNewsArticle[];
+  };
 
-    type AlertData = {
-        symbol: string;
-        company: string;
-        alertName: string;
-        alertType: 'upper' | 'lower';
-        threshold: string;
-    };
+  // ───────────────────────────────
+  // ALERT TYPES
+  // ───────────────────────────────
+  type AlertFormData = {
+    alertName: string;
+    alertType: "price" | "volume";
+    condition: "greater" | "less";
+    threshold: string;
+  };
 
-    type AlertModalProps = {
-        alertId?: string;
-        alertData?: AlertData;
-        action?: string;
-        open: boolean;
-        setOpen: (open: boolean) => void;
-    };
+  type AlertData = {
+    alertName: string;
+    symbol: string;
+    alertType: "price" | "volume";
+    condition: "greater" | "less";
+    threshold: number;
+  };
 
-    type RawNewsArticle = {
-        id: number;
-        headline?: string;
-        summary?: string;
-        source?: string;
-        url?: string;
-        datetime?: number;
-        image?: string;
-        category?: string;
-        related?: string;
-    };
+  type Alert = {
+    id: string;
+    symbol: string;
+    company: string;
+    alertName: string;
+    currentPrice: number;
+    alertType: "upper" | "lower" | "volume";
+    threshold: number;
+    changePercent?: number;
+    frequency?: string;
+  };
 
-    type Alert = {
-        id: string;
-        symbol: string;
-        company: string;
-        alertName: string;
-        currentPrice: number;
-        alertType: 'upper' | 'lower';
-        threshold: number;
-        changePercent?: number;
+  type AlertsListProps = {
+    alertData: Alert[] | undefined;
+  };
+
+  type AlertModalProps = {
+    isOpen: boolean;
+    onClose: () => void;
+    symbol: string;
+    company: string;
+    currentPrice?: number;
+    alertId?: string;
+    onCreateAlert?: (alertData: AlertData) => Promise<void>;
+    initialValues?: {
+      alertName?: string;
+      alertType?: "price" | "volume";
+      condition?: "greater" | "less";
+      threshold?: number;
     };
+    action?: string;
+  };
+
+  // ───────────────────────────────
+  // MISCELLANEOUS
+  // ───────────────────────────────
+  type QuoteData = {
+    c?: number;
+    dp?: number;
+  };
+
+  type ProfileData = {
+    name?: string;
+    marketCapitalization?: number;
+  };
+
+  type FinancialsData = {
+    metric?: { [key: string]: number };
+  };
+
+  type PaginationInfo = {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+
+  type StocksResponse = {
+    data: StockData[];
+    pagination: PaginationInfo;
+  };
+
+  type RecommendationData = {
+    strongBuy: number;
+    buy: number;
+    hold: number;
+    sell: number;
+    strongSell: number;
+    period: string;
+    symbol: string;
+  };
+
+  // ───────────────────────────────
+  // SEARCH TYPES
+  // ───────────────────────────────
+  type FinnhubSearchResult = {
+    symbol: string;
+    description: string;
+    displaySymbol?: string;
+    type: string;
+  };
+
+  type FinnhubSearchResponse = {
+    count: number;
+    result: FinnhubSearchResult[];
+  };
+
+  type SearchCommandProps = {
+    open?: boolean;
+    setOpen?: (open: boolean) => void;
+    renderAs?: "button" | "text";
+    buttonLabel?: string;
+    buttonVariant?: "primary" | "secondary";
+    className?: string;
+    label?: string;
+    initialStocks?: StockWithWatchlistStatus[];
+  };
+
+  // ───────────────────────────────
+  // WATCHLIST TYPES
+  // ───────────────────────────────
+  type WatchlistButtonProps = {
+    symbol: string;
+    company: string;
+    isInWatchlist: boolean;
+    showTrashIcon?: boolean;
+    type?: "button" | "icon";
+    onWatchlistChange?: (symbol: string, isAdded: boolean) => void;
+  };
+
+  type WatchlistTableProps = {
+    watchlist: StockWithData[];
+  };
 }
 
 export {};
